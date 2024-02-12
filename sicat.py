@@ -80,9 +80,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Script to search for vulnerability and exploitation information.')
 
     # Add arguments
-    parser.add_argument('-k','--keyword', type=str, help='File name or path to save the output')
-    parser.add_argument('-kv','--keyword_version', type=str, help='File name or path to save the output')
-    parser.add_argument('-nm','--nmap', type=str, help='Identify via nmap output')
+    parser.add_argument('-k','--keyword', type=str, help='keyword to search in vulnerability lists/databases')
+    parser.add_argument('-kv','--keyword_version', type=str, help='version string to add to keyword search')
+    parser.add_argument('-nm','--nmap', type=str, help='nmap XML output file to parse for services')
     parser.add_argument('--nvd', action='store_true', help='Use NVD as a source of information')
     parser.add_argument('--packetstorm', action='store_true', help='Use PacketStorm as a source of information')
     parser.add_argument('--exploitdb', action='store_true', help='Use ExploitDB as a source of information')
@@ -100,7 +100,10 @@ if __name__ == "__main__":
                 main(args, service['service'], service['version'])
         else:
             print("[!] Only Supported for single host portscan result")
-    else:
+    elif args.keyword:
         keyword = args.keyword
         keyword_version = args.keyword_version
         main(args, keyword , keyword_version)
+    else:
+        print("SiCat requires that you set --keyword/-k or --nmap/-nm.")
+        exit(1)
